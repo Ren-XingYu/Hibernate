@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <!-- 建立类和表的映射  -->
+    <class name="x.y.hibernate.domain.Customer" table="cst_customer">
+        <!-- 建立类中的属性与表中的主键对应 -->
+        <id name="cust_id" column="cust_id">
+            <!--
+                自然主键：主键本身就是表中的一个字段
+                代理主键：主键本身不是表中的一个字段，用了一个与表不相关的字段，比如id等
+                实际开发中尽量使用代理主键，因为自然主键可能参与业务，要修改源码(违背OCP)
+                生成策略：
+                    increment：hibernate提供的自动增长机制，适用于short、int、long类型的主键，在单线程程序中使用
+                    identity：使用数据库底层的自动增长机制，适用于short、int、long类型的主键,mysql支持自动增长,oracle不支持
+                    sequence：适用short、int、long类型的主键，采用序列的方法,mysql不支持序列,oracle支持
+                    uuid：适用于字符串类型的主键，使用hibernate随机方式生成字符串主键
+                    native：本地策略，可以在identity和sequence中自动切换
+                    assigned：hibernate放弃外键的管理，需要手动编写程序或用户自己设置
+                    foreign：外部的，一对一的一种关联映射的条件下使用
+             -->
+            <generator class="native"/>
+        </id>
+        <!-- 建立类中普通属性和表的字段的对应 length:自动建表时指定的长度-->
+        <property name="cust_name" column="cust_name" length="200"/>
+        <property name="cust_source"/>
+        <property name="cust_industry"/>
+        <property name="cust_level"/>
+        <property name="cust_phone"/>
+        <property name="cust_mobile"/>
+
+        <!-- 配置一对多的映射：放置的多的一方的集合
+            name：多的一方的对象集合的属性
+            inverse=true：放弃外键维护权
+        -->
+        <set name="linkMans" cascade="save-update,delete" inverse="true">
+            <!-- 多的一放的外键的名称 -->
+            <key column="lkm_cust_id"/>
+            <!-- class:多的一方的类的全路径 -->
+            <one-to-many class="x.y.hibernate.domain.LinkMan"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

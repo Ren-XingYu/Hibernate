@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- 连接数据库 -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql:///hibernate</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <!-- 配置Hibernate方言 -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!-- 打印SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- 格式化SQL -->
+        <property name="hibernate.format_sql">true</property>
+        <!-- 自动建表
+            none：不自动建表
+            create：数据库中如果已经存在则会删除重建，没有则新建（测试）
+            create-drop：数据库中如果已经存在删除原有表，执行操作，删除这个表。如果没有，则新建，使用完后删除(测试)
+            update：使用原有的表，没有则新建，可以更新表结构，不删除
+            validate：没有表，不会创建，只会使用数据库中的表，但是会校验映射和表结构
+         -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- 设置事务的隔离级别 -->
+        <property name="hibernate.connection.isolation">4</property>
+        <!--
+            thread:session生命周期与线程绑定,可以不用调用seesion.close()，线程结束，自动关闭
+            jta:跨数据库事务获取同一个session
+            managed:Hibernate委托程序来管理session的生命周期
+         -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        <!-- 配置C3P0连接池 -->
+        <property name="connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+        <!--在连接池中可用的数据库连接的最少数目 -->
+        <property name="c3p0.min_size">5</property>
+        <!--在连接池中所有数据库连接的最大数目  -->
+        <property name="c3p0.max_size">20</property>
+        <!--设定数据库连接的过期时间,以秒为单位,
+        如果连接池中的某个数据库连接处于空闲状态的时间超过了timeout时间,就会从连接池中清除 -->
+        <property name="c3p0.timeout">120</property>
+        <!--每3000秒检查所有连接池中的空闲连接 以秒为单位-->
+        <property name="c3p0.idle_test_period">3000</property>
+
+        <mapping resource="x/y/hibernate/domain/Customer.hbm.xml"/>
+        <mapping resource="x/y/hibernate/domain/LinkMan.hbm.xml"/>
+        <mapping resource="x/y/hibernate/domain/User.hbm.xml"/>
+        <mapping resource="x/y/hibernate/domain/Role.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

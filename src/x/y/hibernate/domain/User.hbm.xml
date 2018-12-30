@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="x.y.hibernate.domain.User" table="sys_user">
+        <id name="user_id" column="user_id">
+            <generator class="native"/>
+        </id>
+        <property name="user_code"/>
+        <property name="user_name"/>
+        <property name="user_password"/>
+        <property name="user_state"/>
+        <!-- table：中间表名称 -->
+        <set name="roles" table="sys_user_role" cascade="save-update">
+            <!-- 多的一放的外键的名称 -->
+            <key column="user_id"/>
+            <!-- class:多的一方的类的全路径 -->
+            <!-- 对方对象在中间表的名称 -->
+            <many-to-many class="x.y.hibernate.domain.Role" column="role_id"/>
+        </set>
+    </class>
+
+</hibernate-mapping>
